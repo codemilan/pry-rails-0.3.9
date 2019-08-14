@@ -32,7 +32,7 @@ class PryRails::ShowModel < Pry::ClassCommand
 
     case
     when defined?(ActiveRecord::Base) && model < ActiveRecord::Base
-      output.puts formatter.format_active_record(model)
+      output.puts formatter.format_active_record(model, args.last)
     when defined?(Mongoid::Document) && model < Mongoid::Document
       output.puts formatter.format_mongoid(model)
     else

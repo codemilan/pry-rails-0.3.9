@@ -2,16 +2,18 @@
 
 module PryRails
   class ModelFormatter
-    def format_active_record(model)
+    def format_active_record(model, column_names='true')
       out = []
       out.push format_model_name model
 
-      if model.table_exists?
-        model.columns.each do |column|
-          out.push format_column column.name, column.type
+      unless column_names.downcase == 'false'
+        if model.table_exists?
+          model.columns.each do |column|
+            out.push format_column column.name, column.type
+          end
+        else
+          out.push format_error "Table doesn't exist"
         end
-      else
-        out.push format_error "Table doesn't exist"
       end
 
       reflections = model.reflections.sort_by do |other_model, reflection|
